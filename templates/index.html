@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Centered Form</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .center-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .fancy-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .fancy-form h2 {
+            margin-top: 0;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        .fancy-form input[type="file"],
+        .fancy-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .fancy-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .fancy-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="center-container">
+    <form class="fancy-form" action="/" method="POST" enctype="multipart/form-data">  
+        <h2>Upload a File</h2>
+        <input type="file" name="file" value="">
+        <br><br>
+        <label for="choice">Choose an Option:</label>
+        <select id="choice" name="choice">
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+        </select>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
