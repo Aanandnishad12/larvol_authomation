@@ -12,6 +12,10 @@ import sys
 import os
 from io import BytesIO
 from zipfile import ZipFile
+# from flask import Flask, render_template, request, send_file
+# import pandas as pd
+from openpyxl import load_workbook, Workbook
+# from io import BytesIO
 app = Flask(__name__)
 
 
@@ -720,12 +724,47 @@ def hello_world():
                 # with ZipFile(stream, 'w') as zf:
                 #     os.path.join(target, '*.sql')
         # Check if the file exists
-                if os.path.exists(xlsx_file_path):
-                        # Set the headers to indicate that it's an attachment and specify the filename
-                    response = send_file(xlsx_file_path, as_attachment=True, download_name=fr"{source_file}_QC_comments.txt")
-                    return response
+                # if os.path.exists(xlsx_file_path):
+                #         # Set the headers to indicate that it's an attachment and specify the filename
+                #     response = send_file(xlsx_file_path, as_attachment=True, download_name=fr"{source_file}_QC_comments.txt")
+                #     return response
+                # return 
+                # try:
+                #     with open(xlsx_file_path, 'r') as file:
+                #         context = file.read()
+                #     #  os.remove(file_path)
+                # except FileNotFoundError:
+                #     context = None
+                xlsx_file_path = fr"{source_file}_QC_comments.txt"
+                with open(xlsx_file_path, "r") as file1:
+                    content1 = file1.read()
+
+                # Read the second text file
+                xlsx_file_path = fr"{source_file}_sponsor.txt"
+                with open(xlsx_file_path, "r") as file2:
+                    content2 = file2.read()
+
+                # Combine the contents of both files
+                context = f"{content1}\n\n{content2}" if content1 and content2 else (content1 or content2)
+
+                # Get the directory path of the Python file
+                # current_directory = os.path.dirname(os.path.realpath(__file__))
+
+                # # Construct the path to the "Previus" directory relative to the current directory
+                # previus_directory = os.path.join(current_directory, "Previus")
+
+                # # Loop through all files and directories in the "Previus" directory and remove them
+                # for root, dirs, files in os.walk(previus_directory, topdown=False):
+                #     for name in files:
+                #         os.remove(os.path.join(root, name))
+                #     for name in dirs:
+                #         os.rmdir(os.path.join(root, name))
+
+                return render_template("index.html", context=context)
+                # Render the template with the file content as context
+                # return render_template('index.html', context=context)
         except Exception as e:
-            print()
+            print(e,"=============================================================")
             return e
     #         else:
     #             return 'File not found', 404
@@ -750,9 +789,19 @@ def hello_world():
 
 @app.route('/hello', methods=['GET', 'POST'])
 def hello_world1():
-    save_directory = os.path.dirname(os.path.abspath(__file__))
-    print(home_directory,"======================================================")
-    return "helllo"
+    if request.method == 'POST':
+        # Your existing code to load and modify the template goes here
+
+        # Save a test file "hello_world.txt" in the same folder
+        test_file_path = "hello_world.txt"
+        with open(test_file_path, "w") as file:
+            file.write("Hello World")
+
+        # Return the test file for download
+        return send_file("/home/anand/Desktop/larvol_automation/project/hello_world.txt", as_attachment=True, download_name='hello_world.txt')
+
+    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
+

@@ -1,4 +1,4 @@
-#!/home/anand/Desktop/larvol_automation/project/myvenv/bin/python3
+#!/home/anand/Desktop/larvol_automation/project/myvenv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

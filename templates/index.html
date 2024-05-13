@@ -11,6 +11,13 @@
             background-color: #f0f0f0;
         }
 
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
         .center-container {
             position: absolute;
             top: 50%;
@@ -56,24 +63,66 @@
         .fancy-form button:hover {
             background-color: #45a049;
         }
+        .scrollable-content {
+    max-height: 100vh; /* Take up 100% of the viewport height */
+    overflow: auto;
+    padding: 20px;
+}
     </style>
 </head>
 <body>
 
-<div class="center-container">
-    <form class="fancy-form" action="/" method="POST" enctype="multipart/form-data">  
-        <h2>Upload a File</h2>
-        <input type="file" name="file" value="">
-        <br><br>
-        <label for="choice">Choose an Option:</label>
-        <select id="choice" name="choice">
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-        </select>
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
-</div>
+    <div class="header">
+        <h1>Welcome to My Flask App</h1>
+        <div class="form-container">
+            <form class="fancy-form" action="/" method="POST" enctype="multipart/form-data">  
+                <h2>Upload a File</h2>
+                <input type="file" name="file" value="">
+                <br><br>
+                <label for="choice">Choose an Option:</label>
+                <select id="choice" name="choice">
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                </select>
+                <br><br>
+                <button type="submit">Submit</button>
+                <!-- New button that calls a different function -->
+                <br><br>
+                <button type="button" onclick="callBackendFunction()">Change Template</button>
+            </form>
+        </div>
+    </div>
+
+{% if context is not none %}
+    <!-- Load the context content with preserved formatting -->
+    <div class="scrollable-content">
+        <pre>{{ context }}</pre>
+    </div>
+{% endif %}
 
 </body>
+<script>
+function callBackendFunction() {
+    // Get form data
+    var formData = new FormData(document.querySelector('form'));
+
+    // Make an AJAX request to the Flask backend
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/hello', true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Request was successful
+            console.log(xhr.responseText);
+        } else {
+            // Request failed
+            console.error('Request failed with status:', xhr.status);
+        }
+    };
+    xhr.onerror = function() {
+        // Error occurred during the request
+        console.error('An error occurred during the request');
+    };
+    xhr.send(formData); // Send form data in the request body
+}
+    </script>
 </html>
