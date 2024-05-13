@@ -12,6 +12,10 @@ import sys
 import os
 from io import BytesIO
 from zipfile import ZipFile
+# from flask import Flask, render_template, request, send_file
+# import pandas as pd
+from openpyxl import load_workbook, Workbook
+# from io import BytesIO
 app = Flask(__name__)
 
 
@@ -57,8 +61,14 @@ def hello_world():
                 print(save_directory)
                 source_file = fr"{save_directory}/{filename}"
                 print(source_file)
+                
                 df = pd.read_excel(source_file)
                 df = df.replace(np.nan, '')
+                # uploaded_df = pd.read_excel(source_file, sheet_name=None, header=1)
+                uploaded_df = pd.read_excel(source_file, sheet_name=None, header=1)
+                # uploaded_df = uploaded_df.replace(np.nan, '')
+                # df = pd.read_excel(source_file)
+                # df = df.replace(np.nan, '')
                 # print(df)
                 source_file = source_file.split('.')[0]
 
@@ -564,27 +574,6 @@ def hello_world():
 
 
 
-                # def Single_session_title_multiple_sid(df):
-                #     msg = '##############################   Single session title multiple sid   ##################################\n\n'
-
-                #     grouped_bk_group = df.groupby('session_title')
-
-                #     for _, group_df in grouped_bk_group:
-
-                #         if group_df['news_type'].to_list().count('Session')==1:
-
-                #             if len(set(group_df['session_id'].to_list()))>1:
-
-                #                 msg += f' Title \"{_}\" is pointing to multiple different SID please check  \n\n'
-
-                #     return f'{msg}\n\n'
-
-
-                # temp_msg = Single_session_title_multiple_sid(df)
-                # paitron_msg += temp_msg
-                # to_write += temp_msg
-
-
                 if '' in manual_id:
                     temp_msg = '=================>  vacant cell found in manual_id column  <=================\n\n'
                     to_write += temp_msg
@@ -662,16 +651,6 @@ def hello_world():
                 with open(f"{source_file}_QC_comments.txt",'w',encoding='utf-8') as f:
                     f.write(to_write)
 
-
-
-                # if paitron_msg.count('===========>')<1 and len(to_write_unique_source_id)<1:
-                #     print(to_write_unique_source_id)
-
-                #     os.system("python3 separate_authors.py")
-                #     print('running separate_authors')
-                    
-                    
-
                 sponsor = ["Sponsor",
                 "Sponsored by",
                 "Sponsorship",
@@ -716,43 +695,76 @@ def hello_world():
                 # Process or save the uploaded file here
                 xlsx_file_path = fr"{source_file}_QC_comments.txt"  # Update this with the actual file path
                 print(xlsx_file_path,"===============================","$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-                # stream = BytesIO()
-                # with ZipFile(stream, 'w') as zf:
-                #     os.path.join(target, '*.sql')
-        # Check if the file exists
-                if os.path.exists(xlsx_file_path):
-                        # Set the headers to indicate that it's an attachment and specify the filename
-                    response = send_file(xlsx_file_path, as_attachment=True, download_name=fr"{source_file}_QC_comments.txt")
-                    return response
-        except Exception as e:
-            print()
-            return e
-    #         else:
-    #             return 'File not found', 404
-        # xlsx_file_path = source_file
-        # if os.path.exists(xlsx_file_path):
-        #     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ code is here ")
-    # os.remove(fr"{source_file}_QC_comments.txt")
-    # os.remove(fr"{source_file}_QC_comments.txt")
-    # os.remove(fr"{source_file}_QC_comments.txt")
 
-            # print(f'deleting priviouslg generated comments {source_file}.txt')
-        # xlsx_file_path = fr"{source_file}_sponsor.txt" 
-        # if os.path.exists(xlsx_file_path):
-        #     os.remove(xlsx_file_path)
-        # xlsx_file_path = source_file 
-        # if os.path.exists(xlsx_file_path):
-        #     os.remove(xlsx_file_path)
-    # print(xlsx_file_path,"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
+                # if os.path.exists(xlsx_file_path):
+
+                #     response = send_file(xlsx_file_path, as_attachment=True, download_name=fr"{source_file}_QC_comments.txt")
+                #     return response
+                
+                # uploaded_df = df
+                # print(uploaded_df.head())
+                # uploaded_df = pd.read_excel(uploaded_file, sheet_name=None, header=1)  # Skip the first row (header)
+
+                # Load the template Excel file
+                current_directory = os.path.dirname(os.path.realpath(__file__))
+                template_filename = 'Acronym_2024_LT_MMDDYYYY.xlsx'
+                template_path = os.path.join(current_directory, 'raw_excel', template_filename)
+                print("Template path:", template_path)
+
+                # Create a new workbook to save the modified template
+                output_wb = Workbook()
+
+                # Process each sheet in the uploaded Excel file
+                for sheet_name, sheet_data in uploaded_df.items():
+                    if sheet_name in template_wb.sheetnames:
+                        print("Processing sheet:", sheet_name)
+                        # Skip the first row in the uploaded sheet (header)
+                        sheet_data = sheet_data.iloc[1:]
+
+                        # Copy data from the uploaded sheet to the corresponding sheet in the output workbook
+                        output_ws = output_wb.create_sheet(title=sheet_name)
+                        for index, row in sheet_data.iterrows():
+                            output_ws.append(row.tolist())
+
+                # Save the modified template to a new file
+                output_filename = os.path.join(current_directory, 'output', new_filename)
+                output_wb.save(output_filename)
+
+                # Return the path to the saved Excel file
+                # return output_filename
+
+            # Example usage
+                uploaded_file = 'path_to_uploaded_file.xlsx'  # Replace with the path to your uploaded file
+                new_filename = 'modified_template.xlsx'  # Replace with the desired new filename
+                saved_file_path = process_excel(uploaded_file, new_filename)
+                print("File saved at:", saved_file_path)
+
+                # Send the modified Excel file as a downloadable response
+            return send_file(output_filename, as_attachment=True, download_name='modified_template.xlsx')
+
+        except Exception as e:
+            print(e,"=============================================================")
+            return e
+
 
     return render_template("index.html")
 
 
 @app.route('/hello', methods=['GET', 'POST'])
 def hello_world1():
-    save_directory = os.path.dirname(os.path.abspath(__file__))
-    print(home_directory,"======================================================")
-    return "helllo"
+    if request.method == 'POST':
+        # Your existing code to load and modify the template goes here
+
+        # Save a test file "hello_world.txt" in the same folder
+        test_file_path = "hello_world.txt"
+        with open(test_file_path, "w") as file:
+            file.write("Hello World")
+
+        # Return the test file for download
+        return send_file("/home/anand/Desktop/larvol_automation/project/hello_world.txt", as_attachment=True, download_name='hello_world.txt')
+
+    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
+
