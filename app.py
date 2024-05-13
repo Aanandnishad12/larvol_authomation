@@ -793,14 +793,55 @@ def hello_world1():
         # Your existing code to load and modify the template goes here
 
         # Save a test file "hello_world.txt" in the same folder
-        test_file_path = "hello_world.txt"
-        with open(test_file_path, "w") as file:
-            file.write("Hello World")
+    #     test_file_path = "hello_world.txt"
+    #     with open(test_file_path, "w") as file:
+    #         file.write("Hello World")
 
-        # Return the test file for download
-        return send_file("/home/anand/Desktop/larvol_automation/project/hello_world.txt", as_attachment=True, download_name='hello_world.txt')
+    #     # Return the test file for download
+    #     return send_file("/home/anand/Desktop/larvol_automation/project/hello_world.txt", as_attachment=True, download_name='hello_world.txt')
 
-    return render_template('index.html')
+    # return render_template('index.html')
+            if 'file' not in request.files:
+                return 'No file part'
+
+            file = request.files['file']
+            number = request.form["choice"]
+
+            if file.filename == '':
+                return 'No selected file'
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                # df = pd.DataFrame(file)
+                # print(df)
+
+                save_directory = os.path.dirname(os.path.abspath(__file__))
+                save_directory+="/changing_template"
+                if os.path.exists(save_directory) and os.path.isdir(save_directory):
+                    # Get a list of all the files and subdirectories in the directory
+                    for item in os.listdir(save_directory):
+                        item_path = os.path.join(save_directory, item)
+                        
+                        if os.path.isfile(item_path):
+                            # If it's a file, remove it
+                            os.remove(item_path)
+                        elif os.path.isdir(item_path):
+                            # If it's a directory, recursively empty it
+                            save_directory(item_path)
+                
+                # print(save_directory,"0000000000000000000000000000000000000000000000000000000000000")
+                file.save(os.path.join(save_directory, filename))
+                # print(save_directory)
+
+                file.save(os.path.join(save_directory, filename))
+                # print(save_directory)
+                source_file = fr"{save_directory}/{filename}"
+                # print(source_file)
+                df = pd.read_excel(source_file)
+                df = df.replace(np.nan, '')
+                # print(df)
+                source_file = source_file.split('.')[0]
+                print(df)
+                
 
 if __name__ == "__main__":
     app.run(debug=True)
