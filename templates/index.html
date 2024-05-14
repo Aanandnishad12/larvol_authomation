@@ -74,6 +74,11 @@
         <button type="submit">Submit</button>
     </form>
 </div>
-
+{% if context is not none %}
+<!-- Load the context content with preserved formatting -->
+<div class="scrollable-content">
+    <pre>{{ context }}</pre>
+</div>
+{% endif %}
 </body>
 </html>

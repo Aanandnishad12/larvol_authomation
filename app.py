@@ -695,53 +695,27 @@ def hello_world():
                 # Process or save the uploaded file here
                 xlsx_file_path = fr"{source_file}_QC_comments.txt"  # Update this with the actual file path
                 print(xlsx_file_path,"===============================","$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+                # stream = BytesIO()
+                # with ZipFile(stream, 'w') as zf:
+                #     os.path.join(target, '*.sql')
+        # Check if the file exists
+                xlsx_file_path = fr"{source_file}_QC_comments.txt"  # Update this with the actual file path
+                print(xlsx_file_path,"===============================","$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 
-                # if os.path.exists(xlsx_file_path):
+                xlsx_file_path = fr"{source_file}_QC_comments.txt"
+                with open(xlsx_file_path, "r") as file1:
+                    content1 = file1.read()
 
-                #     response = send_file(xlsx_file_path, as_attachment=True, download_name=fr"{source_file}_QC_comments.txt")
-                #     return response
-                
-                # uploaded_df = df
-                # print(uploaded_df.head())
-                # uploaded_df = pd.read_excel(uploaded_file, sheet_name=None, header=1)  # Skip the first row (header)
+                # Read the second text file
+                xlsx_file_path = fr"{source_file}_sponsor.txt"
+                with open(xlsx_file_path, "r") as file2:
+                    content2 = file2.read()
 
-                # Load the template Excel file
-                current_directory = os.path.dirname(os.path.realpath(__file__))
-                template_filename = 'Acronym_2024_LT_MMDDYYYY.xlsx'
-                template_path = os.path.join(current_directory, 'raw_excel', template_filename)
-                print("Template path:", template_path)
+                # Combine the contents of both files
+                context = f"{content1}\n\n{content2}" if content1 and content2 else (content1 or content2)
 
-                # Create a new workbook to save the modified template
-                output_wb = Workbook()
 
-                # Process each sheet in the uploaded Excel file
-                for sheet_name, sheet_data in uploaded_df.items():
-                    if sheet_name in template_wb.sheetnames:
-                        print("Processing sheet:", sheet_name)
-                        # Skip the first row in the uploaded sheet (header)
-                        sheet_data = sheet_data.iloc[1:]
-
-                        # Copy data from the uploaded sheet to the corresponding sheet in the output workbook
-                        output_ws = output_wb.create_sheet(title=sheet_name)
-                        for index, row in sheet_data.iterrows():
-                            output_ws.append(row.tolist())
-
-                # Save the modified template to a new file
-                output_filename = os.path.join(current_directory, 'output', new_filename)
-                output_wb.save(output_filename)
-
-                # Return the path to the saved Excel file
-                # return output_filename
-
-            # Example usage
-                uploaded_file = 'path_to_uploaded_file.xlsx'  # Replace with the path to your uploaded file
-                new_filename = 'modified_template.xlsx'  # Replace with the desired new filename
-                saved_file_path = process_excel(uploaded_file, new_filename)
-                print("File saved at:", saved_file_path)
-
-                # Send the modified Excel file as a downloadable response
-            return send_file(output_filename, as_attachment=True, download_name='modified_template.xlsx')
-
+                return render_template("index.html", context=context)
         except Exception as e:
             print(e,"=============================================================")
             return e
@@ -750,20 +724,6 @@ def hello_world():
     return render_template("index.html")
 
 
-@app.route('/hello', methods=['GET', 'POST'])
-def hello_world1():
-    if request.method == 'POST':
-        # Your existing code to load and modify the template goes here
-
-        # Save a test file "hello_world.txt" in the same folder
-        test_file_path = "hello_world.txt"
-        with open(test_file_path, "w") as file:
-            file.write("Hello World")
-
-        # Return the test file for download
-        return send_file("/home/anand/Desktop/larvol_automation/project/hello_world.txt", as_attachment=True, download_name='hello_world.txt')
-
-    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
