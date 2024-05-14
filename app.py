@@ -720,39 +720,31 @@ def hello_world():
                 # with ZipFile(stream, 'w') as zf:
                 #     os.path.join(target, '*.sql')
         # Check if the file exists
-                if os.path.exists(xlsx_file_path):
-                        # Set the headers to indicate that it's an attachment and specify the filename
-                    response = send_file(xlsx_file_path, as_attachment=True, download_name=fr"{source_file}_QC_comments.txt")
-                    return response
+                xlsx_file_path = fr"{source_file}_QC_comments.txt"  # Update this with the actual file path
+                print(xlsx_file_path,"===============================","$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+
+                xlsx_file_path = fr"{source_file}_QC_comments.txt"
+                with open(xlsx_file_path, "r") as file1:
+                    content1 = file1.read()
+
+                # Read the second text file
+                xlsx_file_path = fr"{source_file}_sponsor.txt"
+                with open(xlsx_file_path, "r") as file2:
+                    content2 = file2.read()
+
+                # Combine the contents of both files
+                context = f"{content1}\n\n{content2}" if content1 and content2 else (content1 or content2)
+
+
+                return render_template("index.html", context=context)
         except Exception as e:
             print()
             return e
-    #         else:
-    #             return 'File not found', 404
-        # xlsx_file_path = source_file
-        # if os.path.exists(xlsx_file_path):
-        #     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ code is here ")
-    # os.remove(fr"{source_file}_QC_comments.txt")
-    # os.remove(fr"{source_file}_QC_comments.txt")
-    # os.remove(fr"{source_file}_QC_comments.txt")
 
-            # print(f'deleting priviouslg generated comments {source_file}.txt')
-        # xlsx_file_path = fr"{source_file}_sponsor.txt" 
-        # if os.path.exists(xlsx_file_path):
-        #     os.remove(xlsx_file_path)
-        # xlsx_file_path = source_file 
-        # if os.path.exists(xlsx_file_path):
-        #     os.remove(xlsx_file_path)
-    # print(xlsx_file_path,"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
 
     return render_template("index.html")
 
 
-@app.route('/hello', methods=['GET', 'POST'])
-def hello_world1():
-    save_directory = os.path.dirname(os.path.abspath(__file__))
-    print(home_directory,"======================================================")
-    return "helllo"
 
 if __name__ == "__main__":
     app.run(debug=True)
