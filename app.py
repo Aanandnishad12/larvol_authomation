@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from werkzeug.utils import secure_filename
 import pandas as pd
 import numpy as np
-
+from paitron import Main
 import re
 #from Config import *
 from datetime import datetime
@@ -790,32 +790,29 @@ def hello_world():
 @app.route('/hello', methods=['GET', 'POST'])
 def hello_world1():
     if request.method == 'POST':
-        # Your existing code to load and modify the template goes here
+        
+        if 'file' not in request.files:
+            return 'No file part'
 
-        # Save a test file "hello_world.txt" in the same folder
-    #     test_file_path = "hello_world.txt"
-    #     with open(test_file_path, "w") as file:
-    #         file.write("Hello World")
+        file = request.files['file']
+        number = request.form["choice"]
+        print(number,"222222222222222222222222222222222222")
 
-    #     # Return the test file for download
-    #     return send_file("/home/anand/Desktop/larvol_automation/project/hello_world.txt", as_attachment=True, download_name='hello_world.txt')
-
-    # return render_template('index.html')
-            if 'file' not in request.files:
-                return 'No file part'
-
-            file = request.files['file']
-            number = request.form["choice"]
-
-            if file.filename == '':
-                return 'No selected file'
+        if file.filename == '':
+            return 'No selected file'
+        try:
             if file and allowed_file(file.filename):
+                # filename = secure_filename(file.filename)
+                # df = pd.DataFrame(filename)
+
                 filename = secure_filename(file.filename)
+                print(filename,"====================================")
+
                 # df = pd.DataFrame(file)
                 # print(df)
 
                 save_directory = os.path.dirname(os.path.abspath(__file__))
-                save_directory+="/changing_template"
+                save_directory+="/paitronfile"
                 if os.path.exists(save_directory) and os.path.isdir(save_directory):
                     # Get a list of all the files and subdirectories in the directory
                     for item in os.listdir(save_directory):
@@ -830,18 +827,50 @@ def hello_world1():
                 
                 # print(save_directory,"0000000000000000000000000000000000000000000000000000000000000")
                 file.save(os.path.join(save_directory, filename))
-                # print(save_directory)
-
-                file.save(os.path.join(save_directory, filename))
-                # print(save_directory)
+                print(save_directory)
                 source_file = fr"{save_directory}/{filename}"
-                # print(source_file)
+                # print(source_file,"========================")
+                # savring_path1 = source_file.split(".")[0]+"1"+".xlsx"
+                # savring_path2 = source_file.split(".")[0]+"2"+".xlsx"
+                # print(savring_path1)
                 df = pd.read_excel(source_file)
-                df = df.replace(np.nan, '')
-                # print(df)
-                source_file = source_file.split('.')[0]
-                print(df)
-                
+                # print(df.to_excel(fr"./paitronfile/hellowworld.xlsx"))
+                # print("==============================")
+                # filtered_df1 = df[df['authors'].str.contains(r'\d+')]
+                # if not df['authors'].str.contains(r'\d+').any():
+                # print("=================")
+                Main(source_file,"author_info.xlsx",number)
+                if os.path.exists("./paitronfile/author_info.xlsx"):
+                        # Set the headers to indicate that it's an attachment and specify the filename
+                    response = send_file("./paitronfile/author_info.xlsx", as_attachment=True, download_name="authurs.xlsx")
+                    return response
+                # else:
+
+                #     pass
+
+
+                # print(len(filtered_df1),"++++++++++++++++++=")
+                # filtered_df2 = df[~df['authors'].str.contains(r'\d+')]
+                # print(filtered_df2)
+                # filtered_df1.to_excel(savring_path1)
+                # filtered_df2.to_excel(savring_path2)
+
+
+                # filtered_df
+                # df = df.replace(np.nan, '')
+                # start = datetime.now()
+                # obj = pairtron()
+                # obj.process_pairtron(df)
+
+                # total_time = datetime.now() - start
+                # print ("\nScript End Time ",datetime.now())
+                # print ("Execution Time", total_time)
+
+        except:
+            pass
+    return render_template("index.html")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

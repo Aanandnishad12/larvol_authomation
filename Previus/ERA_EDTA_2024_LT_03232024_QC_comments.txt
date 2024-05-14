@@ -1,0 +1,147 @@
+##############################   extra space at start and end    ##################################
+
+
+
+##############################   Encoding string    ##################################
+
+
+
+##############################   invalid mid format   ##################################
+
+
+
+##############################   line_breakes    ##################################
+
+
+
+##############################   Invalid author_aff_delimiter   ##################################
+
+
+
+##############################   space in mid time url   ##################################
+
+
+
+##############################   Invalid date_format   ##################################
+
+
+
+##############################   Invalid start_end_time_format   ##################################
+
+
+
+##############################   time ( 7 =< time >= 0 )   ##################################
+
+
+
+############################   Wrong data in is_paid   ##############################
+
+
+
+##############################   time ( time >= 23:30 )   ##################################
+
+
+
+##############################   Start time is grater then End time  ##################################
+
+
+
+##############################   start_time is blank but end_time is there   ##################################
+
+
+
+##############################   start_time end_time is same   ##################################
+
+
+
+##############################   invalid session id format   ##################################
+
+
+
+##############################   invalid news_type format   ##################################
+
+
+
+##############################   Formula in excel (AS General)  ##################################
+
+
+
+##############################   Formula in excel (AS Text)    ##################################
+
+
+
+##############################   Two or more Session(news_type) for single SID   ##################################
+
+
+
+##############################   multiple session_title to single SID   ##################################
+
+
+
+
+##############################   Duplicate mid  ##################################
+
+
+                        mannual_id which are not unique 
+
+
+
+
+
+
+
+                -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                #################################################################        Duplicates          ######################################################################
+                -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                        source_id which are not unique 
+
+
+
+
+
+
+
+                        
+                        artical_id which are not unique 
+Break ===========> total count is 13
+Introduction ===========> total count is 10
+Q&A #1 ===========> total count is 2
+Q&A #2 ===========> total count is 2
+Indications and epidemiology of native kidney biopsy ===========> total count is 2
+Practical aspect of Biopsy (video) ===========> total count is 2
+Practical pathology for Biopsy (Processing of the samples and tests) ===========> total count is 2
+Complications of Kidney Biopsy ===========> total count is 2
+Biopsy demonstration and Practice ===========> total count is 2
+Why are felids at such a high risk of chronic kidney disease? ===========> total count is 2
+NDT Editor selects 2 Speakers from associate Editors ===========> total count is 2
+CKJ Editor selects 2 Speakers from the Editorial Board ===========> total count is 2
+Bicc1 and PKD: linking RNA metabolism to kidney disease ===========> total count is 2
+TBD ===========> total count is 2
+Panel discussion ===========> total count is 2
+e-Poster ===========> total count is 7
+Distal Arteriovenous Fistulas for Hemodialysis - Too Many Interventions? ===========> total count is 2
+Minimising catheter associated infection ===========> total count is 2
+Kinking and Tip position ===========> total count is 2
+Assessment and management of central vein stenosis and atrial thrombus ===========> total count is 2
+Discussion ===========> total count is 3
+Demonstration Tunnelled Line Insertion & Non tunnelled Line insertion ===========> total count is 2
+Practice ===========> total count is 2
+Welcome and introduction ===========> total count is 10
+Closing remarks ===========> total count is 6
+Audience Q&A ===========> total count is 2
+Summary and close ===========> total count is 2
+Q&A ===========> total count is 3
+Welcome and Introduction ===========> total count is 5
+AKI & Critical Care Nephrology ===========> total count is 7
+Chronic Kidney Disease ===========> total count is 10
+Very low protein integrated diet (sVLPD), without keto analogues, in patients with advanced chronic renal failure: clinical and economic benefits. ===========> total count is 2
+Dialysis ===========> total count is 14
+Glomerular, tubulo-interstitial diseases & general nephrology ===========> total count is 13
+Kidney Transplantation (clinical and immunology) ===========> total count is 7
+PCSK9 inhibitor addition during hypothermic perfusion protects kidney from ischemic damage in a rat model of donation after circulatory death ===========> total count is 2
+Higher daily protein intake can reduce the risk of infections in kidney transplant recipients during the early post-transplant period ===========> total count is 2
+Physiology, cell biology & genetic diseases ===========> total count is 5
+Time for nephrologists to lead the charge in optimal management of Fabry disease? ===========> total count is 2
+Chronic kidney disease ===========> total count is 11
+Hypertension & Diabetes ===========> total count is 3
+What is the window of opportunity for disease modification in lupus nephritis? ===========> total count is 2
