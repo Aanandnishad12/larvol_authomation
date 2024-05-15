@@ -18,6 +18,7 @@ from zipfile import ZipFile
 from openpyxl import load_workbook, Workbook
 # from io import BytesIO
 from excelclear import excel_clear
+from seperateauthor import amanin
 app = Flask(__name__)
 
 
@@ -806,6 +807,86 @@ def download_file():
                 return send_file(fr"./uploads1/{i}", as_attachment=True, download_name=fr"./uploads1/{i}")
         else:
             return "hahaha i m joking"
+    except Exception as e:
+        return "error Error sending the file " 
+    
+
+@app.route('/sep_authirs', methods=['GET', 'POST'])
+def upload_file1():
+    if request.method == 'POST':
+
+        if 'file' not in request.files:
+            return "nice"
+
+        file = request.files['file']
+        print(file.filename,"++++++++++++++++++++++++")
+        file.seek(0, os.SEEK_END)
+        file_length = file.tell()
+        
+        text_input = request.form.get('text_input', '').strip()
+        if file_length > MAX_FILE_SIZE:
+            return "error File size exceeds the limit of 15 MB"
+
+        file.seek(0)
+        
+
+        if file and allowed_file(file.filename):
+            clear_uploads_folder(app.config['UPLOAD_FOLDERS2'])
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDERS2'], filename))
+            # file.save(os.path.join(app.config['UPLOAD_FOLDERS2'], filename))
+            print(os.path.join(app.config['UPLOAD_FOLDERS2']),"===========================")
+            # namessddsd = str(file.filename).split(".")[0]
+            # excel_clear(namessddsd,group_by_author_replace=text_input)
+            dfdff = pd.read_excel(fr"./uploads2/{file.filename}")
+            dfdff = dfdff.replace(np.nan, '')
+            # dfdff.dropna(subset=['authors'], inplace=True)
+
+            # Filter rows where 'authors' column contains '\d+'
+            filtered_df = dfdff[dfdff['authors'].str.contains(r'\d+')]
+            print(filtered_df)
+            remaining_df = dfdff[~dfdff.index.isin(filtered_df.index)]
+            print(remaining_df)
+            filtered_df.to_excel("./uploads2/1.xlsx")
+            remaining_df.to_excel("./uploads2/2.xlsx")
+            amanin("./uploads2/1.xlsx","./uploads2/1next.xlsx",1)
+            amanin("./uploads2/2.xlsx","./uploads2/2next.xlsx",2)
+            df11 = pd.read_excel("./uploads2/1next.xlsx")
+            df22 = pd.read_excel("./uploads2/2next.xlsx")
+            df_final = pd.concat([df11, df22])
+            df_final['numeric_id'] = df_final['manual_id'].str.extract(r'(\d+)').astype(int)
+
+# Sort DataFrame by 'numeric_id' and reset index
+            df_sorted = df_final.sort_values(by='numeric_id').reset_index(drop=True)
+
+            # Remove the temporary 'numeric_id' column
+            df_sorted.drop(columns='numeric_id', inplace=True)
+
+            # print(df_sorted)
+            df_sorted.to_excel("./uploads2/finaauthor.xlsx")
+
+
+
+
+            
+            return render_template('sepauthor.html', download_ready=True)
+    return render_template('sepauthor.html')
+@app.route('/download1')
+def download_file1():
+    # return "hello"
+    try:
+        # Extract query parameters
+        # namessddsd = request.args.get('namessddsd')
+        # directory = './uploads2'
+
+# Get all files in the directory
+        # files = os.listdir(directory)
+        # for i in files:
+            # if "_colored" in i:
+            #     print(fr"./uploads1/{i}")
+        return send_file(fr"./uploads2/finaauthor.xlsx", as_attachment=True, download_name=fr"./uploads2/finaauthor.xlsx")
+        # else:
+        #     return "hahaha i m joking"
     except Exception as e:
         return "error Error sending the file " 
     
