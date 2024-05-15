@@ -875,18 +875,10 @@ def upload_file1():
 def download_file1():
     # return "hello"
     try:
-        # Extract query parameters
-        # namessddsd = request.args.get('namessddsd')
-        # directory = './uploads2'
 
-# Get all files in the directory
-        # files = os.listdir(directory)
-        # for i in files:
-            # if "_colored" in i:
-            #     print(fr"./uploads1/{i}")
+
         return send_file(fr"./uploads2/finaauthor.xlsx", as_attachment=True, download_name=fr"./uploads2/finaauthor.xlsx")
-        # else:
-        #     return "hahaha i m joking"
+
     except Exception as e:
         return "error Error sending the file " 
     
