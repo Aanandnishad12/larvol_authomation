@@ -729,13 +729,8 @@ def hello_world():
 
                 # Process or save the uploaded file here
                 xlsx_file_path = fr"{source_file}_QC_comments.txt"  # Update this with the actual file path
-                print(xlsx_file_path,"===============================","$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-                # stream = BytesIO()
-                # with ZipFile(stream, 'w') as zf:
-                #     os.path.join(target, '*.sql')
-        # Check if the file exists
+     
                 xlsx_file_path = fr"{source_file}_QC_comments.txt"  # Update this with the actual file path
-                print(xlsx_file_path,"===============================","$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 
                 xlsx_file_path = fr"{source_file}_QC_comments.txt"
                 with open(xlsx_file_path, "r") as file1:
