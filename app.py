@@ -27,7 +27,7 @@ UPLOAD_FOLDERS =  "uploads2"
 app.config['UPLOAD_FOLDERS2'] = UPLOAD_FOLDERS
 UPLOAD_FOLDERS =  "uploads1"
 app.config['UPLOAD_FOLDERS1'] = UPLOAD_FOLDERS
-MAX_FILE_SIZE = 15 * 1024 * 1024  # 12 MB
+MAX_FILE_SIZE = 15* 1024 * 1024  # 12 MB
 
 
 def clear_uploads_folder(UPLOAD_FOLDER):
