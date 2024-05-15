@@ -51,7 +51,7 @@ def trim_dataframe(df):
 def convert_df(name):
     import numpy as np
 	
-    df = pd.read_excel(f'{name}.xlsx',engine='openpyxl')
+    df = pd.read_excel(fr'./uploads1/{name}.xlsx',engine='openpyxl')
     df.reset_index(drop=True, inplace=True)
     df = df.replace(np.nan, '')
     return df
@@ -63,7 +63,7 @@ def clean_excel(df):
 
 def df_excel(df,name):
 
-    df.to_excel(f'{name}_polished.xlsx',index=False,engine='openpyxl')
+    df.to_excel(f'./uploads1/{name}_polished.xlsx',index=False,engine='openpyxl')
 
 def date_time_formetor_manuall (data,manual_date_format,desire_format):
     date_time_obj = datetime.strptime(data, manual_date_format)
@@ -302,7 +302,7 @@ def excel_clear(target,sheet_name="Acronym_2024_LT_MMDDYYYY",group_by="session_t
     df_excel(df,excel_name)
 
     try:
-        wb = load_workbook(f'{excel_name}_polished.xlsx', data_only=True)
+        wb = load_workbook(f'./uploads1/{excel_name}_polished.xlsx', data_only=True)
     except:
         print('Not available to read')
 
@@ -338,9 +338,9 @@ def excel_clear(target,sheet_name="Acronym_2024_LT_MMDDYYYY",group_by="session_t
         ct+=1
 
     try:
-        wb.save(f'{excel_name}_colored.xlsx')
-        os.remove(f"{excel_name}_polished.xlsx")
-        os.remove(f"{excel_name}_unique_mid_sid_title.txt")
+        wb.save(f'./uploads1/{excel_name}_colored.xlsx')
+        os.remove(f"./uploads1/{excel_name}_polished.xlsx")
+        os.remove(f"./uploads1/{excel_name}_unique_mid_sid_title.txt")
     except:
         print('Not available to read')
 
@@ -397,8 +397,10 @@ def excel_clear(target,sheet_name="Acronym_2024_LT_MMDDYYYY",group_by="session_t
     to_write = re.sub('1qaz2wsx.*?total count is \d+','',to_write)
 
     to_write = str(to_write)
-    with open(f"{excel_name}_unique_mid_sid_title.txt",'w',encoding='utf-8') as f:
+    with open(f"./uploads1/{excel_name}_unique_mid_sid_title.txt",'w',encoding='utf-8') as f:
         f.write(to_write)
         
     print('=='*30+'\n')      
     print('process ended\n')
+
+

@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 import numpy as np
 
+
 import re
 #from Config import *
 from datetime import datetime
@@ -16,10 +17,33 @@ from zipfile import ZipFile
 # import pandas as pd
 from openpyxl import load_workbook, Workbook
 # from io import BytesIO
+from excelclear import excel_clear
 app = Flask(__name__)
 
 
 ALLOWED_EXTENSIONS = {'xlsx'}
+
+UPLOAD_FOLDERS =  "uploads2"
+app.config['UPLOAD_FOLDERS2'] = UPLOAD_FOLDERS
+UPLOAD_FOLDERS =  "uploads1"
+app.config['UPLOAD_FOLDERS1'] = UPLOAD_FOLDERS
+MAX_FILE_SIZE = 15 * 1024 * 1024  # 12 MB
+
+
+def clear_uploads_folder(UPLOAD_FOLDER):
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+    for filename in os.listdir(UPLOAD_FOLDER):
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                os.rmdir(file_path)
+        except Exception as e:
+            print(f'Failed to delete {file_path}. Reason: {e}')
+
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -36,6 +60,16 @@ def hello_world():
 
         if file.filename == '':
             return 'No selected file'
+        file.seek(0, os.SEEK_END)
+        file_length = file.tell()
+        
+
+        if file_length > MAX_FILE_SIZE:
+            return "error File size exceeds the limit of 15 MB"
+
+        file.seek(0)
+                
+
         try:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
@@ -725,6 +759,56 @@ def hello_world():
 
 
 
+@app.route('/hello', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+
+        if 'file' not in request.files:
+            return "nice"
+
+        file = request.files['file']
+        print(file.filename,"++++++++++++++++++++++++")
+        file.seek(0, os.SEEK_END)
+        file_length = file.tell()
+        
+        text_input = request.form.get('text_input', '').strip()
+        if file_length > MAX_FILE_SIZE:
+            return "error File size exceeds the limit of 15 MB"
+
+        file.seek(0)
+        
+
+        if file and allowed_file(file.filename):
+            clear_uploads_folder(app.config['UPLOAD_FOLDERS1'])
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDERS1'], filename))
+            # file.save(os.path.join(app.config['UPLOAD_FOLDERS2'], filename))
+            print(os.path.join(app.config['UPLOAD_FOLDERS1']),"===========================")
+            namessddsd = str(file.filename).split(".")[0]
+            excel_clear(namessddsd,group_by_author_replace=text_input)
+            return render_template('excel.html', download_ready=True)
+            # return send_file(fr"./uploads1/{namessddsd}_colored.xlsx", as_attachment=True, download_name=fr"./uploads1/{namessddsd}_colored.xlsx")
+            # return render_template('excel.html')
+    return render_template('excel.html')
+
+@app.route('/download')
+def download_file():
+    try:
+        # Extract query parameters
+        # namessddsd = request.args.get('namessddsd')
+        directory = './uploads1'
+
+# Get all files in the directory
+        files = os.listdir(directory)
+        for i in files:
+            if "_colored" in i:
+                print(fr"./uploads1/{i}")
+                return send_file(fr"./uploads1/{i}", as_attachment=True, download_name=fr"./uploads1/{i}")
+        else:
+            return "hahaha i m joking"
+    except Exception as e:
+        return "error Error sending the file " 
+    
 if __name__ == "__main__":
     app.run(debug=True)
 
