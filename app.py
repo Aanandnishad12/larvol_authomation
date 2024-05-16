@@ -878,5 +878,5 @@ def download_file1():
         return "error Error sending the file " 
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
 
