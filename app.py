@@ -858,6 +858,7 @@ def upload_file1():
             df_sorted.drop(columns='numeric_id', inplace=True)
 
             # print(df_sorted)
+            df_sorted = df_sorted.applymap(lambda x: x.strip() if isinstance(x, str) else x)
             df_sorted.to_excel("./uploads2/finaauthor.xlsx")
 
 
