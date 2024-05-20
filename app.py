@@ -770,6 +770,8 @@ def upload_file():
         text_input = request.form.get('text_input', '').strip()
         if file_length > MAX_FILE_SIZE:
             return "error File size exceeds the limit of 15 MB"
+        if len(text_input)==0:
+            text_input = "All Speakers"
 
         file.seek(0)
         
