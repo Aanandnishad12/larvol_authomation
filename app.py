@@ -755,7 +755,7 @@ def hello_world():
 
 
 
-@app.route('/hello', methods=['GET', 'POST'])
+@app.route('/excel_cleaner', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
 
@@ -808,7 +808,7 @@ def download_file():
         return "error Error sending the file " 
     
 
-@app.route('/sep_authirs', methods=['GET', 'POST'])
+@app.route('/separate_authors', methods=['GET', 'POST'])
 def upload_file1():
     if request.method == 'POST':
 
