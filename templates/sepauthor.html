@@ -4,12 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .center-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .fancy-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .fancy-form h2 {
+            margin-top: 0;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        .fancy-form input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .fancy-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .fancy-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-  <form action="/separate_authors" method="post" enctype="multipart/form-data">
+  <div class="center-container">
+    <form class="fancy-form" action="/separate_authors" method="post" enctype="multipart/form-data">
+      <h2>Upload Your File</h2>
       <input type="file" name="file" required>
-      <input type="submit" value="Upload">
-  </form>
+      <button type="submit">Upload</button>
+    </form>
+  </div>
 
   {% if download_ready %}
   <script>
