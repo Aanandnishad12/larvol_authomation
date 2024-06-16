@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 from werkzeug.utils import secure_filename
 import pandas as pd
 import numpy as np
@@ -21,13 +21,15 @@ from excelclear import excel_clear
 from seperateauthor import amanin
 app = Flask(__name__)
 
-
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
 ALLOWED_EXTENSIONS = {'xlsx'}
 
 UPLOAD_FOLDERS =  "uploads2"
 app.config['UPLOAD_FOLDERS2'] = UPLOAD_FOLDERS
 UPLOAD_FOLDERS =  "uploads1"
 app.config['UPLOAD_FOLDERS1'] = UPLOAD_FOLDERS
+UPLOAD_FOLDERS = 'uploads3'
+app.config['UPLOAD_FOLDER3'] = UPLOAD_FOLDERS
 MAX_FILE_SIZE = 15* 1024 * 1024  # 12 MB
 
 
@@ -880,6 +882,25 @@ def download_file1():
     except Exception as e:
         return "error Error sending the file " 
     
+
+def upload_file():
+    if 'files[]' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    
+    files = request.files.getlist('files[]')
+    for file in files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            flash('Allowed file types are .xlsx')
+            return redirect(request.url)
+    
+    flash('Files successfully uploaded')
+    return redirect(url_for('index'))
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
 
