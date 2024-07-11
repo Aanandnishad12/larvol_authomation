@@ -326,7 +326,34 @@ def hello_world():
                 temp_msg = (date_format({'date':date}))
                 paitron_msg += temp_msg
                 to_write += temp_msg
+                def current_year_and_date_check(res):
+                    msg = '##############################   year check! Correct All date format before year checking ##################################\n\n'
+                    # print(list(set(res["date"])),"----------------------")
 
+                    date_format = "%B %d, %Y"
+                    ct = 1
+                    for date_str in res["date"]:
+                        ct+=1
+                        # Parse the string into a datetime object
+                        try:
+                            date_obj = datetime.datetime.strptime(date_str, date_format)
+                            # Get the current year
+                            current_year = datetime.datetime.now().year
+                            
+                            # Check if the year matches the current year
+                            if date_obj.year == current_year:
+                                # return date_obj
+                                pass
+                            else:
+                                msg += f'date ============> Row no. {ct} has {date_obj.year} rather than current year {str(current_year)}\n'
+                        except:
+                            pass
+
+                    return msg
+
+                temp_msg = (current_year_and_date_check({'date':date}))
+                paitron_msg += temp_msg
+                to_write += temp_msg
 
                 def start_end_time_format(res):
                     msg = '##############################   Invalid start_end_time_format   ##################################\n\n'
